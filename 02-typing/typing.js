@@ -1,19 +1,18 @@
 'use strict';
 var makeOrdinal = require('./makeOrdinal');
-//@ts-ignore
-var isFinite = require('./isFinite');
+var isfinite = require('./isFinite');
 var isSafeNumber = require('./isSafeNumber');
-var ENumbers;
-(function (ENumbers) {
-    ENumbers[ENumbers["TEN"] = 10] = "TEN";
-    ENumbers[ENumbers["ONE_HUNDRED"] = 100] = "ONE_HUNDRED";
-    ENumbers[ENumbers["ONE_THOUSAND"] = 1000] = "ONE_THOUSAND";
-    ENumbers[ENumbers["ONE_MILLION"] = 1000000] = "ONE_MILLION";
-    ENumbers[ENumbers["ONE_BILLION"] = 1000000000] = "ONE_BILLION";
-    ENumbers[ENumbers["ONE_TRILLION"] = 1000000000000] = "ONE_TRILLION";
-    ENumbers[ENumbers["ONE_QUADRILLION"] = 1000000000000000] = "ONE_QUADRILLION";
-    ENumbers[ENumbers["MAX"] = 9007199254740992] = "MAX";
-})(ENumbers || (ENumbers = {}));
+var Numbers;
+(function (Numbers) {
+    Numbers[Numbers["TEN"] = 10] = "TEN";
+    Numbers[Numbers["ONE_HUNDRED"] = 100] = "ONE_HUNDRED";
+    Numbers[Numbers["ONE_THOUSAND"] = 1000] = "ONE_THOUSAND";
+    Numbers[Numbers["ONE_MILLION"] = 1000000] = "ONE_MILLION";
+    Numbers[Numbers["ONE_BILLION"] = 1000000000] = "ONE_BILLION";
+    Numbers[Numbers["ONE_TRILLION"] = 1000000000000] = "ONE_TRILLION";
+    Numbers[Numbers["ONE_QUADRILLION"] = 1000000000000000] = "ONE_QUADRILLION";
+    Numbers[Numbers["MAX"] = 9007199254740992] = "MAX";
+})(Numbers || (Numbers = {}));
 // var TEN = 10;
 // var ONE_HUNDRED = 100;
 // var ONE_THOUSAND = 1000;
@@ -23,11 +22,38 @@ var ENumbers;
 // var ONE_QUADRILLION = 1000000000000000; // 1.000.000.000.000.000 (15)
 // var MAX = 9007199254740992;             // 9.007.199.254.740.992 (15)
 var LESS_THAN_TWENTY = [
-    'zero', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine', 'ten',
-    'eleven', 'twelve', 'thirteen', 'fourteen', 'fifteen', 'sixteen', 'seventeen', 'eighteen', 'nineteen'
+    'zero',
+    'one',
+    'two',
+    'three',
+    'four',
+    'five',
+    'six',
+    'seven',
+    'eight',
+    'nine',
+    'ten',
+    'eleven',
+    'twelve',
+    'thirteen',
+    'fourteen',
+    'fifteen',
+    'sixteen',
+    'seventeen',
+    'eighteen',
+    'nineteen',
 ];
 var TENTHS_LESS_THAN_HUNDRED = [
-    'zero', 'ten', 'twenty', 'thirty', 'forty', 'fifty', 'sixty', 'seventy', 'eighty', 'ninety'
+    'zero',
+    'ten',
+    'twenty',
+    'thirty',
+    'forty',
+    'fifty',
+    'sixty',
+    'seventy',
+    'eighty',
+    'ninety',
 ];
 /**
  * Converts an integer into words.
@@ -40,7 +66,7 @@ var TENTHS_LESS_THAN_HUNDRED = [
 function toWords(number, asOrdinal) {
     var words;
     var num = parseInt(number, 10);
-    if (!isFinite(num)) {
+    if (!isfinite(num)) {
         throw new TypeError('Not a finite number: ' + number + ' (' + typeof number + ')');
     }
     if (!isSafeNumber(num)) {
@@ -50,7 +76,8 @@ function toWords(number, asOrdinal) {
     return asOrdinal ? makeOrdinal(words) : words;
 }
 function generateWords(number, words) {
-    var remainder, word, words = arguments[1];
+    var remainder = 0, word = '';
+    // words = arguments[1];
     // We’re done
     if (number === 0) {
         return !words ? 'zero' : words.join(' ').replace(/,$/, '');
@@ -68,39 +95,44 @@ function generateWords(number, words) {
         remainder = 0;
         word = LESS_THAN_TWENTY[number];
     }
-    else if (number < ENumbers.ONE_HUNDRED) {
-        remainder = number % ENumbers.TEN;
-        word = TENTHS_LESS_THAN_HUNDRED[Math.floor(number / ENumbers.TEN)];
+    else if (number < Numbers.ONE_HUNDRED) {
+        remainder = number % Numbers.TEN;
+        word = TENTHS_LESS_THAN_HUNDRED[Math.floor(number / Numbers.TEN)];
         // In case of remainder, we need to handle it here to be able to add the “-”
         if (remainder) {
             word += '-' + LESS_THAN_TWENTY[remainder];
             remainder = 0;
         }
     }
-    else if (number < ENumbers.ONE_THOUSAND) {
-        remainder = number % ENumbers.ONE_HUNDRED;
-        word = generateWords(Math.floor(number / ENumbers.ONE_HUNDRED)) + ' hundred';
+    else if (number < Numbers.ONE_THOUSAND) {
+        remainder = number % Numbers.ONE_HUNDRED;
+        word = generateWords(Math.floor(number / Numbers.ONE_HUNDRED)) + ' hundred';
     }
-    else if (number < ENumbers.ONE_MILLION) {
-        remainder = number % ENumbers.ONE_THOUSAND;
-        word = generateWords(Math.floor(number / ENumbers.ONE_THOUSAND)) + ' thousand,';
+    else if (number < Numbers.ONE_MILLION) {
+        remainder = number % Numbers.ONE_THOUSAND;
+        word =
+            generateWords(Math.floor(number / Numbers.ONE_THOUSAND)) + ' thousand,';
     }
-    else if (number < ENumbers.ONE_BILLION) {
-        remainder = number % ENumbers.ONE_MILLION;
-        word = generateWords(Math.floor(number / ENumbers.ONE_MILLION)) + ' million,';
+    else if (number < Numbers.ONE_BILLION) {
+        remainder = number % Numbers.ONE_MILLION;
+        word =
+            generateWords(Math.floor(number / Numbers.ONE_MILLION)) + ' million,';
     }
-    else if (number < ENumbers.ONE_TRILLION) {
-        remainder = number % ENumbers.ONE_BILLION;
-        word = generateWords(Math.floor(number / ENumbers.ONE_BILLION)) + ' billion,';
+    else if (number < Numbers.ONE_TRILLION) {
+        remainder = number % Numbers.ONE_BILLION;
+        word =
+            generateWords(Math.floor(number / Numbers.ONE_BILLION)) + ' billion,';
     }
-    else if (number < ENumbers.ONE_QUADRILLION) {
-        remainder = number % ENumbers.ONE_TRILLION;
-        word = generateWords(Math.floor(number / ENumbers.ONE_TRILLION)) + ' trillion,';
+    else if (number < Numbers.ONE_QUADRILLION) {
+        remainder = number % Numbers.ONE_TRILLION;
+        word =
+            generateWords(Math.floor(number / Numbers.ONE_TRILLION)) + ' trillion,';
     }
-    else if (number <= ENumbers.MAX) {
-        remainder = number % ENumbers.ONE_QUADRILLION;
-        word = generateWords(Math.floor(number / ENumbers.ONE_QUADRILLION)) +
-            ' quadrillion,';
+    else if (number <= Numbers.MAX) {
+        remainder = number % Numbers.ONE_QUADRILLION;
+        word =
+            generateWords(Math.floor(number / Numbers.ONE_QUADRILLION)) +
+                ' quadrillion,';
     }
     words.push(word);
     return generateWords(remainder, words);

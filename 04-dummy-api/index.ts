@@ -1,9 +1,9 @@
-enum EGender {
-  male = 'male',
-  female = 'female'
+enum Gender {
+  MALE = 'male',
+  FEMALE = 'female'
 }
 
-enum EMethod {
+enum Method {
   GET = 'GET',
   POST = 'POST',
   PUT = 'PUT',
@@ -11,67 +11,72 @@ enum EMethod {
   DELETE = 'DELETE'
 }
 
-interface IHair {
-  color: string,
-  type: string
+interface Hair {
+  color: string;
+  type: string;
 }
 
-interface IAddress {
-  address: string,
-  city: string,
-  coordinates: any,
-  postalCode: string,
-  state: string
+interface Coordinates {
+  lat: string;
+  lng: string;
 }
 
-interface IBank {
-  cardExpire: string,
-  cardNumber: string,
-  cardType: string,
-  currency: string,
-  iban: string
+interface Address {
+  address: string;
+  city: string;
+  coordinates: Coordinates;
+  postalCode: string;
+  state: string;
 }
 
-interface ICompany {
-  address: IAddress,
-  department: string,
-  name: string,
-  title: string
+interface Bank {
+  cardExpire: string;
+  cardNumber: string;
+  cardType: string;
+  currency: string;
+  iban: string;
 }
 
-interface IUser {
-  id: number,
-  firstName: string,
-  lastName: string,
-  maidenName: string,
-  age: number,
-  gender: EGender,
-  email: string,
-  phone: string,
-  username: string,
-  password: string,
-  birthDate: string,
-  image: string,
-  bloodGroup: string,
-  height: number,
-  weight: number,
-  eyeColor: string,
-  hair: IHair,
-  domain: string,
-  ip: string,
-  address: IAddress,
-  macAddress: string,
-  university: string,
-  bank: IBank,
-  company: ICompany,
-  ein: string,
-  ssn: string,
-  userAgent: string
+interface Company {
+  address: Address;
+  department: string;
+  name: string;
+  title: string;
+}
+
+interface User {
+  id: number;
+  firstName: string;
+  lastName: string;
+  maidenName: string;
+  age: number;
+  gender: Gender;
+  email: string;
+  phone: string;
+  username: string;
+  password: string;
+  birthDate: string;
+  image: string;
+  bloodGroup: string;
+  height: number;
+  weight: number;
+  eyeColor: string;
+  hair: Hair;
+  domain: string;
+  ip: string;
+  address: Address;
+  macAddress: string;
+  university: string;
+  bank: Bank;
+  company: Company;
+  ein: string;
+  ssn: string;
+  userAgent: string;
 }
 
 const axios = require('axios');
 
-axios.get('https://dummyjson.com/users',  { method: EMethod.GET,}).then((resp: { data: { users: IUser[] } }) => {
+axios.get('https://dummyjson.com/users',  { method: Method.GET,}).then((resp: { data: { users: User[] } }) => {
     console.log(resp.data.users);
-}).catch((e: { message: any }) => console.log(e.message));
+}).catch((e: { message: any }) => console.dir(e.message));
 
