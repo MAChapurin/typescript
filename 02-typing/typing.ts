@@ -89,7 +89,7 @@ function toWords(number: number | string, asOrdinal?: boolean): string {
 function generateWords(number: number, words?: string[]): string {
   var remainder: number = 0,
     word: string = '';
-    words = arguments[1];
+    // words = arguments[1];
 
   // We’re done
   if (number === 0) {
