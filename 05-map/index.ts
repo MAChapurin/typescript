@@ -1,60 +1,69 @@
-'use strict'
-
-type PropertyType = string | number;
-type ValueType = any;
+'use strict';
 
 interface Bucket {
-  [key: PropertyType]: ValueType;
+  [key: string]: { [key: string]: any };
 }
 
 class CopyMap {
   private bucket: Bucket = {};
-  //Хранить данные в buckets, hash которых расчитывать по какой логике
-  //Это тз ужасно
-  
-  set(key:PropertyType, value: ValueType): this {
-    this.bucket[key] = value;
-    return this
+
+  static getHash(value: string): string {
+    return parseInt(`${value.length}`,16).toString();
+  }
+  set(key: string, value: any): this {
+    const hash = CopyMap.getHash(key);
+    if (this.bucket[hash]) {
+      this.bucket[hash][key] = value;
+    } else {
+      this.bucket[hash] = {
+        [key]: value,
+      };
+    }
+    return this;
   }
 
-  get(key: PropertyType) {
-    return this.bucket?.[key]
+  get(key: string) {
+    return this.bucket?.[CopyMap.getHash(key)];
   }
 
-  delete(key: PropertyType) {
-    const newObj: Bucket = {}
-    Object.entries(this.bucket).filter(el => {
-      return el[0] !== key;
-    }).forEach(el => {
-      const [property, value] = el;
-      newObj[property] = value;
-    })
-    
-    this.bucket = {...newObj}
+  delete(key: string) {
+    const hash = CopyMap.getHash(key);
+    if (this.bucket[hash]) {
+    }
+    const newObj: Bucket = {};
+    Object.entries(this.bucket)
+      .filter((el) => {
+        return el[0] !== hash;
+      })
+      .forEach((el) => {
+        const [property, value] = el;
+        newObj[property] = value;
+      });
+
+    this.bucket = { ...newObj };
   }
 
   clear(): void {
-    this.bucket = {}
+    this.bucket = {};
   }
 
   size(): number {
-    return Object.keys(this.bucket).length
+    return Object.keys(this.bucket).length;
   }
   print(): void {
-    console.log(this.bucket)
+    console.log(this.bucket);
   }
-
 }
 
-console.log('start')
+console.log('start');
 
 const myMap = new CopyMap();
-myMap.set('Moscow',28).set('London',20).set('Peterburg', 12);
+myMap.set('Paris', 28).set('London', 20).set('Peterburg', 12);
 myMap.print();
 myMap.delete('London');
 myMap.print();
-console.log(myMap.size);
-myMap
+console.log(myMap.size());
+myMap;
 myMap.clear();
 myMap.print();
 
