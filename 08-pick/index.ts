@@ -7,8 +7,12 @@ function pickObjectkeys<T extends Record<string, any>,K extends keyof T>(obj: T,
 const user1 = {
   name: 'Vasya',
   age: 18,
-  skills: ['typescript', 'javascript']
+  skills: ['typescript', 'javascript'],
+  User(name) {
+    this.name = name;
+    this.isAdmin = false;
+  },
 }
 
-const pickUser1Keys = pickObjectkeys(user1, ['age', 'skills'])
+const pickUser1Keys = pickObjectkeys(user1, ['age', 'skills', 'User'])
 console.log(pickUser1Keys);
