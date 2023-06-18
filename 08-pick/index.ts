@@ -1,7 +1,4 @@
-type keyType = string | number | symbol;
-type abstractObj = Record<keyType, any>
-
-function pickObjectkeys<T extends abstractObj,K extends keyof T>(obj: T, keys: K[]): abstractObj {
+function pickObjectkeys<T extends Record<string, any>,K extends keyof T>(obj: T, keys: K[]): Record<string, any> {
   return keys.reduce((acc, key)=> {
    return {...acc, [key]: obj[key]};
   },{} )
