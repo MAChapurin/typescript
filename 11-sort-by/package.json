@@ -1,0 +1,16 @@
+{
+  "name": "11-sort-by",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "type": "commonjs",
+  "scripts": {
+    "start": "node build/index.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "sort-by": "^1.2.0"
+  }
+}
