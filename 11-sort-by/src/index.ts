@@ -1,4 +1,4 @@
-const sortBy = require('sort-by');
+import  sortBy  from "sort-by";
 
 const users = [
   {
@@ -21,6 +21,9 @@ const users = [
   },
 ];
 
+console.log('Исходный массив:');
 console.log(users);
 users.sort(sortBy('name', 'age'));
+console.log('\n');
+console.log('Отсортированный по свойствам age и name массив:');
 console.log(users);
