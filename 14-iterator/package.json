@@ -1,0 +1,12 @@
+{
+  "name": "14-iterator",
+  "version": "1.0.0",
+  "description": "в терминале с папкой проекта введите команду tsc и запустите файл index.html",
+  "main": "index.js",
+  "scripts": {
+    "start": "node build index.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
