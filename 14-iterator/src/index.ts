@@ -17,27 +17,27 @@ class TaskList {
     return new Date(year as number, month as number, day)
   }
 
-  public sortById(waning = false) {
+  public sortById(directionSort: DirectionSortType = 'down') {
     this.tasks = this.tasks.sort((a, b) => {
       if (a.id > b.id) {
-        return waning ? -1 : 1;
+        return directionSort === 'up' ? -1 : 1;
       } else if (a.id === b.id) {
         return 0;
       } else {
-        return waning ? 1 : -1;
+        return directionSort === 'up' ? 1 : -1;
       }
     });
   }
 
-  public sortByDate(waning = false) {
+  public sortByDate(directionSort: DirectionSortType = 'down') {
     const fn = this.formatDateForRussian
     this.tasks = this.tasks.sort((a: Task, b: Task): number => {
       if (new Date(fn(a.date)).getTime() > new Date(fn(b.date)).getTime()) {
-        return waning ? -1 : 1;
+        return directionSort === 'up' ? -1 : 1;
       } else if (new Date(fn(a.date)).getTime() === new Date(fn(b.date)).getTime()) {
         return 0;
       } else {
-        return waning ? 1 : -1;
+        return directionSort === 'up' ? 1 : -1;
       }
     });
   }
@@ -54,8 +54,8 @@ class TaskList {
     return this.tasks.length;
   }
 
-  public getIterator(property: keyof Task, waning = false) {
-    return new TaskIterator(this, property, waning);
+  public getIterator(property: keyof Task, directionSort: DirectionSortType = 'down') {
+    return new TaskIterator(this, property, directionSort);
   }
 }
 
@@ -66,18 +66,20 @@ interface IIterator<T> {
   index(): number;
 }
 
+type DirectionSortType = 'up' | 'down';
+
 class TaskIterator implements IIterator<Task> {
   private position: number = 0;
   private taskList: TaskList;
 
-  constructor(taskList: TaskList, prop: keyof Task, wanning: boolean) {
+  constructor(taskList: TaskList, prop: keyof Task, directionSort: DirectionSortType) {
     this.taskList = taskList;
     switch (prop) {
       case 'id':
-        taskList.sortById(wanning);
+        taskList.sortById(directionSort);
         break;
       case 'date':
-        taskList.sortByDate(wanning);
+        taskList.sortByDate(directionSort);
         break
       default:
         return;
@@ -119,33 +121,33 @@ const iteratorIdGrow = taskStore.getIterator('id');
 console.log('='.repeat(55));
 console.log('Работа итератора id по возрастанию');
 console.log('='.repeat(55));
-console.log(iteratorIdGrow.current())
+// console.log(iteratorIdGrow.current())
 console.log(iteratorIdGrow.next())
 console.log(iteratorIdGrow.next())
 console.log(iteratorIdGrow.next())
 console.log(iteratorIdGrow.prev())
 console.log(iteratorIdGrow.next())
 
-const iteratorIdWaning = taskStore.getIterator('id', true);
+const iteratorIddirectionSort = taskStore.getIterator('id', 'up');
 
 console.log('='.repeat(55));
 console.log('Работа итератора id по убыванию');
 console.log('='.repeat(55));
-console.log(iteratorIdWaning.current());
-console.log(iteratorIdWaning.next());
-console.log(iteratorIdWaning.next());
-console.log(iteratorIdWaning.next());
-console.log(iteratorIdWaning.next());
-console.log(iteratorIdWaning.prev());
-console.log(iteratorIdWaning.prev());
-console.log(iteratorIdWaning.prev());
+
+console.log(iteratorIddirectionSort.next());
+console.log(iteratorIddirectionSort.next());
+console.log(iteratorIddirectionSort.next());
+console.log(iteratorIddirectionSort.next());
+console.log(iteratorIddirectionSort.prev());
+console.log(iteratorIddirectionSort.prev());
+console.log(iteratorIddirectionSort.prev());
 
 const iteratorDateGrow = taskStore.getIterator('date');
 
 console.log('='.repeat(55));
 console.log('Работа итератора дата по возрастанию');
 console.log('='.repeat(55));
-console.log(iteratorDateGrow.current());
+
 console.log(iteratorDateGrow.next());
 console.log(iteratorDateGrow.next());
 console.log(iteratorDateGrow.next());
@@ -157,19 +159,19 @@ console.log(iteratorDateGrow.prev());
 console.log(iteratorDateGrow.prev());
 console.log(iteratorDateGrow.current());
 
-const iteratorDateWaning = taskStore.getIterator('date', true);
+const iteratorDatedirectionSort = taskStore.getIterator('date', 'up');
 
 console.log('='.repeat(55));
 console.log('Работа итератора дата по убыванию');
 console.log('='.repeat(55));
-console.log(iteratorDateWaning.current());
-console.log(iteratorDateWaning.next());
-console.log(iteratorDateWaning.next());
-console.log(iteratorDateWaning.next());
-console.log(iteratorDateWaning.next());
-console.log(iteratorDateWaning.next());
-console.log(iteratorDateWaning.prev());
-console.log(iteratorDateWaning.prev());
-console.log(iteratorDateWaning.prev());
-console.log(iteratorDateWaning.prev());
-console.log(iteratorDateWaning.current());
+
+console.log(iteratorDatedirectionSort.next());
+console.log(iteratorDatedirectionSort.next());
+console.log(iteratorDatedirectionSort.next());
+console.log(iteratorDatedirectionSort.next());
+console.log(iteratorDatedirectionSort.next());
+console.log(iteratorDatedirectionSort.prev());
+console.log(iteratorDatedirectionSort.prev());
+console.log(iteratorDatedirectionSort.prev());
+console.log(iteratorDatedirectionSort.prev());
+

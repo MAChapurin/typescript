@@ -1,4 +1,11 @@
-type MethodsHTTP = 'GET' | 'POST' | 'PATCH' | 'PUT' | 'DELETE';
+// type MethodsHTTP = 'GET' | 'POST' | 'PATCH' | 'PUT' | 'DELETE';
+enum MethodsHTTP {
+  GET = 'GET',
+  POST = 'POST',
+  PATCH = 'PATCH',
+  PUT = 'PUT',
+  DELETE = 'DELETE'
+}
 
 interface Setting {
   method?: MethodsHTTP;
@@ -45,7 +52,7 @@ new MyRequest('https://jsonplaceholder.typicode.com/todos/1')
   .then((json: any) => console.log(json));
 
 new MyRequest('https://jsonplaceholder.typicode.com/posts')
-  .setMethod('POST')
+  .setMethod(MethodsHTTP.POST)
   .setHeaders({
     'Content-type': 'application/json; charset=UTF-8',
   })
@@ -59,7 +66,7 @@ new MyRequest('https://jsonplaceholder.typicode.com/posts')
   .then((json) => console.log(json));
 
 new MyRequest('https://jsonplaceholder.typicode.com/posts/1')
-  .setMethod('PUT')
+  .setMethod(MethodsHTTP.PUT)
   .setHeaders({
     'Content-type': 'application/json; charset=UTF-8',
   })
@@ -74,7 +81,7 @@ new MyRequest('https://jsonplaceholder.typicode.com/posts/1')
   .then((json: any) => console.log(json));
 
 new MyRequest('https://jsonplaceholder.typicode.com/posts/1')
-  .setMethod('DELETE')
+  .setMethod(MethodsHTTP.DELETE)
   .exec();
 
 
